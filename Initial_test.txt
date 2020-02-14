@@ -1,0 +1,9 @@
+Gello, my name is Guilherme and
+I'm 32 years old. Today (Feb 13th, 2020) I'm trying to
+code get_next_line project.
+
+Yesterday I submitted the NetWhat project,
+however there were only 2 evaluator available,
+so I still need one more evaluation, thanks God
+there are still some evaluation points left on my
+profile.
