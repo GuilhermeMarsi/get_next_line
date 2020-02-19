@@ -6,7 +6,7 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:21:05 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/17 18:25:16 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/19 19:15:39 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,21 @@ char	*ft_prepare_next(char *str)
 	temp[j] = '\0';
 	free(str);
 	return (temp);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*ret;
+	size_t	i;
+
+	i = 0;
+	ret = malloc(count * size);
+	if (ret == NULL)
+		return (NULL);
+	while (i < count * size)
+	{
+		((char*)ret)[i] = 0;
+		i += 1;
+	}
+	return (ret);
 }

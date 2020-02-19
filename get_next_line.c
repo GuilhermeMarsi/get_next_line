@@ -6,7 +6,7 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:20:16 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/17 18:25:14 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/19 20:42:31 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_get_line(char *str)
 	i = 0;
 	if (!(linha = (char*)malloc(sizeof(char) * (ft_strlen(str) + 1))))
 		return (NULL);
-	while (str[i] != '\n')
+	while (str[i] != '\n' && str[i])
 	{
 		linha[i] = str[i];
 		i++;
@@ -39,7 +39,7 @@ char	*ft_get_line(char *str)
 	return (linha);
 }
 
-int		ft_check_line_break(char *str)
+int		ft_check_line(char *str)
 {
 	int i;
 
@@ -53,7 +53,7 @@ int		ft_check_line_break(char *str)
 	return (0);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*str;
 	int		i;
@@ -62,8 +62,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (s1 == 0 || s2 == 0)
 		return (0);
-	j = ft_strlen(s1) + ft_strlen(s2);
-	if (!(str = (char*)malloc(sizeof(char) * (j + 1))))
+	j = ft_strlen(s1) + ft_strlen(s2) + 1;
+	if (!(str = (char*)malloc(sizeof(char) * j)))
 		return (NULL);
 	i = 0;
 	while (s1[i])
@@ -78,32 +78,34 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		k++;
 	}
 	str[i + k] = '\0';
+	free((char*)s1);
 	return (str);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	int			bytes_read;
+	int			b_read;
 	char		*buf;
-	static char	*save;
+	static char	*s;
 
-	if (!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1)))
-		|| fd < 0 || BUFFER_SIZE == 0 || !line)
+	if (fd < 0 || BUFFER_SIZE <= 0 || !line ||
+	!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
-	if (save == NULL)
-		if (!(save = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-			return (-1);
-	while ((bytes_read = read(fd, buf, BUFFER_SIZE)) > 0 || ft_strlen(save) > 0)
+	if (!s && !(s = (char*)malloc(sizeof(char) * 1)))
+		return (-1);
+	while (!(ft_check_line(s)) && (b_read = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		buf[bytes_read] = '\0';
-		save = ft_strjoin(save, buf);
-		if (ft_check_line_break(save))
-		{
-			*line = ft_get_line(save);
-			save = ft_prepare_next(save);
-			free(buf);
-			return (1);
-		}
+		buf[b_read] = '\0';
+		s = ft_strjoin(s, buf);
 	}
-	return (0);
+	*line = ft_get_line(s);
+	if (ft_check_line(s) == 0 && b_read == 0)
+	{
+		free(s);
+		free(buf);
+		return (0);
+	}
+	s = ft_prepare_next(s);
+	free(buf);
+	return (1);
 }
