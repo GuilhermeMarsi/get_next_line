@@ -6,21 +6,11 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:20:16 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/19 20:42:31 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/19 22:31:29 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlen(const char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
 
 char	*ft_get_line(char *str)
 {
@@ -51,35 +41,6 @@ int		ft_check_line(char *str)
 		i++;
 	}
 	return (0);
-}
-
-char	*ft_strjoin(const char *s1, const char *s2)
-{
-	char	*str;
-	int		i;
-	int		j;
-	int		k;
-
-	if (s1 == 0 || s2 == 0)
-		return (0);
-	j = ft_strlen(s1) + ft_strlen(s2) + 1;
-	if (!(str = (char*)malloc(sizeof(char) * j)))
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	k = 0;
-	while (s2[k])
-	{
-		str[i + k] = s2[k];
-		k++;
-	}
-	str[i + k] = '\0';
-	free((char*)s1);
-	return (str);
 }
 
 int		get_next_line(int fd, char **line)
