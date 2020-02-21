@@ -6,7 +6,7 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:21:05 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/19 22:31:32 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/20 22:11:32 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,21 @@ char	*ft_prepare_next(char *str)
 	return (temp);
 }
 
-void	*ft_calloc(size_t count, size_t size)
+char	*ft_strdup(const char *s1)
 {
-	void	*ret;
-	size_t	i;
+	char	*str;
+	int		i;
 
 	i = 0;
-	ret = malloc(count * size);
-	if (ret == NULL)
+	if (!(str = (char*)malloc(sizeof(char) * (ft_strlen((char*)s1) + 1))))
 		return (NULL);
-	while (i < count * size)
+	while (s1[i])
 	{
-		((char*)ret)[i] = 0;
-		i += 1;
+		str[i] = s1[i];
+		i++;
 	}
-	return (ret);
+	str[i] = '\0';
+	return (str);
 }
 
 char	*ft_strjoin(const char *s1, const char *s2)
@@ -91,4 +91,32 @@ size_t	ft_strlen(const char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	size_str;
+	size_t	size_sub;
+	char	*sub;
+
+	if (s == NULL)
+		return (NULL);
+	i = 0;
+	size_str = ft_strlen(s);
+	if (start > size_str)
+		start = size_str;
+	if (size_str >= start + len)
+		size_sub = len;
+	else
+		size_sub = size_str - start;
+	if (!(sub = (char*)malloc(size_sub + 1)))
+		return (NULL);
+	while (i < size_sub)
+	{
+		sub[i] = s[start + i];
+		i++;
+	}
+	sub[size_sub] = '\0';
+	return (sub);
 }

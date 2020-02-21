@@ -6,7 +6,7 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:20:16 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/19 22:31:29 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/20 22:11:30 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,24 @@ int		ft_check_line(char *str)
 int		get_next_line(int fd, char **line)
 {
 	int			b_read;
-	char		*buf;
-	static char	*s;
+	char		buf[BUFFER_SIZE + 1];
+	static char	*s[FD_SIZE];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || !line ||
-	!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+	if (fd < 0 || BUFFER_SIZE <= 0 || !line)
 		return (-1);
-	if (!s && !(s = (char*)malloc(sizeof(char) * 1)))
-		return (-1);
-	while (!(ft_check_line(s)) && (b_read = read(fd, buf, BUFFER_SIZE)) > 0)
+	while ((b_read = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
 		buf[b_read] = '\0';
-		s = ft_strjoin(s, buf);
+		s[fd] = s[fd] == NULL ? ft_strdup(buf) : ft_strjoin(s[fd], buf);
+		if (ft_check_line(s[fd]))
+			break ;
 	}
-	*line = ft_get_line(s);
-	if (ft_check_line(s) == 0 && b_read == 0)
+	*line = ft_get_line(s[fd]);
+	if (ft_check_line(s[fd]) == 0 && b_read == 0)
 	{
-		free(s);
-		free(buf);
+		free(s[fd]);
 		return (0);
 	}
-	s = ft_prepare_next(s);
-	free(buf);
+	s[fd] = ft_prepare_next(s[fd]);
 	return (1);
 }
