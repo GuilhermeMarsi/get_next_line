@@ -6,11 +6,11 @@
 /*   By: gmarsi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/12 21:20:16 by gmarsi            #+#    #+#             */
-/*   Updated: 2020/02/28 19:50:35 by gmarsi           ###   ########.fr       */
+/*   Updated: 2020/02/28 19:50:51 by gmarsi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int		ft_strpos(const char *str)
 {
